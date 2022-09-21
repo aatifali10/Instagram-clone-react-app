@@ -1,13 +1,15 @@
 import React from "react";
 import "./App.css";
 import Navbar from "./component/Navbar";
-// import Context from "./Global/Context";
+import Context from "./global/Context";
+import Model from "./component/Model";
 
 function App() {
   return (
-    // <context>
-    <Navbar />
-    // </context>
+    <Context>
+      <Navbar />
+      <Model />
+    </Context>
   );
 }
 

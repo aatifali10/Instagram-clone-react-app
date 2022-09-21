@@ -1,29 +1,30 @@
-import React from "react";
-import { ContextProvider } from "../Global/Context";
+import React, { useContext, useState } from "react";
+import { contextProvider } from "../global/Context";
+// import Logo from "../Images/instagramLogo";
+
 const Model = () => {
-  const { model, closeModel, register, login } = React.useContext(
-    ContextProvider
-  );
-  const [state, setState] = React.useState({
+  const { model, closeModel } = useContext(contextProvider);
+  const [state, setState] = useState({
     register: true,
-    login: false,
+    Login: false,
   });
-  const [inputs, setInputs] = React.useState({
+  const [input, setInput] = useState({
     username: "",
     email: "",
     password: "",
   });
   const handleInput = (e) => {
-    setInputs({ ...inputs, [e.target.name]: e.target.value });
+    setInput({ ...input, [e.target.name]: e.target.value });
   };
-  const formsToggle = () => {
+
+  const formsToggel = () => {
     setState({
       ...state,
       register: !state.register,
-      login: !state.login,
+      Login: !state.Login,
     });
   };
-  const closeForm = (e) => {
+  const closeForms = (e) => {
     const className = e.target.getAttribute("class");
     if (className === "model") {
       closeModel();
@@ -31,44 +32,43 @@ const Model = () => {
   };
   const registerUser = (e) => {
     e.preventDefault();
-    console.log(inputs);
-    register(inputs);
-    setInputs({ username: "", email: "", password: "" });
+    console.log("Good");
   };
-  const userLogin = (e) => {
-    e.preventDefault();
-    login(inputs);
-  };
+
   return (
     <>
       {model ? (
-        <div className="model" onClick={closeForm}>
+        <div className="model" onClick={closeForms}>
           <div className="model__container">
             {state.register ? (
-              <div className="model__form">
+              <div className="model__model__form">
                 <form onSubmit={registerUser}>
                   <div className="model__group">
-                    <img src="/images/instagramLogo.png" alt="" />
+                    <img
+                      src="Images/instagramLogo.jpg"
+                      alt="pic is not display"
+                    />
                   </div>
                   <div className="model__group">
                     <input
                       type="text"
                       name="username"
                       className="model__input"
-                      placeholder="Username..."
+                      placeholder="username..."
                       onChange={handleInput}
-                      value={inputs.username}
+                      value={input.username}
                       required
                     />
                   </div>
+
                   <div className="model__group">
                     <input
                       type="email"
                       name="email"
                       className="model__input"
-                      placeholder="Email..."
+                      placeholder="email..."
                       onChange={handleInput}
-                      value={inputs.email}
+                      value={input.email}
                       required
                     />
                   </div>
@@ -77,9 +77,9 @@ const Model = () => {
                       type="password"
                       name="password"
                       className="model__input"
-                      placeholder="Create password..."
+                      placeholder="create password"
                       onChange={handleInput}
-                      value={inputs.password}
+                      value={input.password}
                       required
                     />
                   </div>
@@ -91,27 +91,26 @@ const Model = () => {
                     />
                   </div>
                   <div className="model__group">
-                    <span onClick={formsToggle}>
-                      Already have an account ?{" "}
-                    </span>
+                    <span onClick={formsToggel}>Already have an account ?</span>
                   </div>
                 </form>
               </div>
             ) : (
-              <div className="model__form">
-                <form onSubmit={userLogin}>
+              <div className="model__model__form">
+                <form>
                   <div className="model__group">
-                    <img src="/images/instagramLogo.png" alt="" />
+                    <img
+                      src="Images/instagramLogo.jpg"
+                      alt="pic is not display"
+                    />
                   </div>
+
                   <div className="model__group">
                     <input
                       type="email"
                       name="email"
                       className="model__input"
-                      placeholder="Email..."
-                      onChange={handleInput}
-                      value={inputs.email}
-                      required
+                      placeholder="email..."
                     />
                   </div>
                   <div className="model__group">
@@ -119,10 +118,7 @@ const Model = () => {
                       type="password"
                       name="password"
                       className="model__input"
-                      placeholder="Create password..."
-                      onChange={handleInput}
-                      value={inputs.password}
-                      required
+                      placeholder="create password"
                     />
                   </div>
                   <div className="model__group">
@@ -133,7 +129,7 @@ const Model = () => {
                     />
                   </div>
                   <div className="model__group">
-                    <span onClick={formsToggle}>Create a new account ? </span>
+                    <span onClick={formsToggel}>Create a new account ?</span>
                   </div>
                 </form>
               </div>
@@ -141,7 +137,7 @@ const Model = () => {
           </div>
         </div>
       ) : (
-        ""
+        " "
       )}
     </>
   );
