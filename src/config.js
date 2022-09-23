@@ -1,5 +1,8 @@
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-import firebase from "firebase";
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+import { getAuth } from "firebase/auth";
+
 const firebaseConfig = {
   apiKey: "AIzaSyCaBP4Oue_XBZcJhlS2hv2B6RYs6rWbsHQ",
   authDomain: "instgram-clone-react-app-be493.firebaseapp.com",
@@ -9,8 +12,8 @@ const firebaseConfig = {
   appId: "1:956495777645:web:ee23876523f68c3e14d464",
   measurementId: "G-WH6MY7EGBY",
 };
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const auth = firebase.auth();
-const storage = firebase.storage();
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+const storage = getStorage(app);
 export { db, auth, storage };

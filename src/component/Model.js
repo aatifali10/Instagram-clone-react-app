@@ -1,20 +1,20 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { contextProvider } from "../global/Context";
-// import Logo from "../Images/instagramLogo";
+import Logo from "../Images/instagramLogo.png";
 
 const Model = () => {
-  const { model, closeModel } = useContext(contextProvider);
+  const { model, closeModel, register, login } = useContext(contextProvider);
   const [state, setState] = useState({
     register: true,
     Login: false,
   });
-  const [input, setInput] = useState({
+  const [inputs, setInputs] = useState({
     username: "",
     email: "",
     password: "",
   });
   const handleInput = (e) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
+    setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
 
   const formsToggel = () => {
@@ -32,9 +32,15 @@ const Model = () => {
   };
   const registerUser = (e) => {
     e.preventDefault();
-    console.log("Good");
+    console.log(inputs);
+    register(inputs);
+    setInputs({ username: "", email: "", password: "" });
   };
-
+  const userLogin = (e) => {
+    e.preventDefault();
+    console.log(inputs);
+    login(inputs);
+  };
   return (
     <>
       {model ? (
@@ -44,10 +50,7 @@ const Model = () => {
               <div className="model__model__form">
                 <form onSubmit={registerUser}>
                   <div className="model__group">
-                    <img
-                      src="Images/instagramLogo.jpg"
-                      alt="pic is not display"
-                    />
+                    <img src={Logo} alt="pic is not display" />
                   </div>
                   <div className="model__group">
                     <input
@@ -56,7 +59,7 @@ const Model = () => {
                       className="model__input"
                       placeholder="username..."
                       onChange={handleInput}
-                      value={input.username}
+                      value={inputs.username}
                       required
                     />
                   </div>
@@ -68,7 +71,7 @@ const Model = () => {
                       className="model__input"
                       placeholder="email..."
                       onChange={handleInput}
-                      value={input.email}
+                      value={inputs.email}
                       required
                     />
                   </div>
@@ -79,7 +82,7 @@ const Model = () => {
                       className="model__input"
                       placeholder="create password"
                       onChange={handleInput}
-                      value={input.password}
+                      value={inputs.password}
                       required
                     />
                   </div>
@@ -97,12 +100,9 @@ const Model = () => {
               </div>
             ) : (
               <div className="model__model__form">
-                <form>
+                <form onSubmit={userLogin}>
                   <div className="model__group">
-                    <img
-                      src="Images/instagramLogo.jpg"
-                      alt="pic is not display"
-                    />
+                    <img src={Logo} alt="pic is not display" />
                   </div>
 
                   <div className="model__group">
@@ -111,6 +111,9 @@ const Model = () => {
                       name="email"
                       className="model__input"
                       placeholder="email..."
+                      onChange={handleInput}
+                      value={inputs.email}
+                      required
                     />
                   </div>
                   <div className="model__group">
@@ -119,6 +122,9 @@ const Model = () => {
                       name="password"
                       className="model__input"
                       placeholder="create password"
+                      onChange={handleInput}
+                      value={inputs.password}
+                      required
                     />
                   </div>
                   <div className="model__group">
