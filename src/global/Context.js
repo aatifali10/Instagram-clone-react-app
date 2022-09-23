@@ -8,6 +8,7 @@ export const contextProvider = createContext();
 const Context = (props) => {
   const [model, setModel] = useState(false);
   const [user, setUser] = useState(null);
+  const [loader, setLoader] = useState(true);
   const openModel = () => {
     setModel(true);
   };
@@ -35,14 +36,46 @@ const Context = (props) => {
     }
     setModel(false);
   };
+  // const Logout = () => {
+  //   auth
+  //     .signOut(function () {
+  //       setUser(null);
+  //     })
+  //     .catch((error) => {
+  //       console.log("error of logout funcation", error);
+  //     });
+  // };
+  const Logout = () => {
+    auth
+      .signOut()
+      .then(() => {
+        setUser(null);
+      })
+      .catch((error) => {
+        console.log("error of logout funcation", error);
+      });
+  };
 
   useEffect(() => {
-    auth.onAuthStateChanged;
-  });
+    auth.onAuthStateChanged((user) => {
+      setUser(user);
+      setLoader(false);
+    });
+  }, []);
+  console.log("Login user", user);
 
   return (
     <contextProvider.Provider
-      value={{ model, openModel, closeModel, register, login }}
+      value={{
+        model,
+        openModel,
+        closeModel,
+        register,
+        login,
+        user,
+        loader,
+        Logout,
+      }}
     >
       {props.children}
     </contextProvider.Provider>

@@ -15,7 +15,22 @@ const Navbar = () => {
   const openForm = () => {
     openModel();
   };
-  const { model, openModel } = useContext(contextProvider);
+  const userLogout = () => {
+    Logout();
+  };
+
+  const checkUser = () => {
+    return !loader && user ? (
+      <li>
+        {user.displayName} / <span onClick={userLogout}>Logout</span>
+      </li>
+    ) : (
+      <li onClick={openForm}>Register / Login</li>
+    );
+  };
+
+  const { model, openModel, user, loader, Logout } =
+    useContext(contextProvider);
   console.log("my model", model);
   return (
     <div className="navbar">
@@ -43,7 +58,7 @@ const Navbar = () => {
         <li>
           <FaRegHeart className="navbar__icons" />
         </li>
-        <li onClick={openForm}>Register / Login</li>
+        {checkUser()}
       </div>
     </div>
   );
