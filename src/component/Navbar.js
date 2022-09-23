@@ -1,6 +1,6 @@
 import React from "react";
 import "./Navbar.css";
-import Logo from "../Images/instagramLogo.png";
+import Logo from "../instagramLogo.png";
 import {
   FaSistrix,
   FaTelegramPlane,

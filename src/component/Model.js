@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { contextProvider } from "../global/Context";
-import Logo from "../Images/instagramLogo.png";
+import Logo from "../instagramLogo.png";
 
 const Model = () => {
   const { model, closeModel, register, login } = useContext(contextProvider);
