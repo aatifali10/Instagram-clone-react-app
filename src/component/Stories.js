@@ -2,14 +2,14 @@ import React, { useState } from "react";
 
 const Stories = () => {
   const [state, setState] = useState([
-    { id: 6, image: "/images/Aatif0.jpg", name: "Aatif Ali" },
+    { id: 0, image: "/images/Aatif0.jpg", name: "Aatif Ali" },
     { id: 1, image: "/Images/ahmed1.jpg", name: "Ahmed Shahzad" },
-    { id: 3, image: "/Images/M.rizwan3.jpg", name: "M.Rizwan" },
+    { id: 2, image: "/Images/M.rizwan3.jpg", name: "M.Rizwan" },
     { id: 3, image: "/Images/shahid2.jpg", name: "Shahid afridi" },
-    { id: 3, image: "/Images/babar4.jpg", name: "Babar azam" },
-    { id: 4, image: "/Images/fawad1.jpg", name: "Fawad khan" },
-    { id: 5, image: "/Images/feroz1.jpg", name: "Feroz khan" },
-    { id: 3, image: "/Images/ahsan1.jpg", name: "Ahsan khan" },
+    { id: 4, image: "/Images/babar4.jpg", name: "Babar azam" },
+    { id: 5, image: "/Images/fawad1.jpg", name: "Fawad khan" },
+    { id: 6, image: "/Images/feroz1.jpg", name: "Feroz khan" },
+    { id: 7, image: "/Images/ahsan1.jpg", name: "Ahsan khan" },
   ]);
   return (
     <div className="stories">

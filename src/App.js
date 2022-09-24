@@ -4,6 +4,7 @@ import Navbar from "./component/Navbar";
 import Context from "./global/Context";
 import Model from "./component/Model";
 import Stories from "./component/Stories";
+import Create from "./component/Create";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Navbar />
       <div className="container">
         <Stories />
+        <Create />
       </div>
       <Model />
     </Context>
