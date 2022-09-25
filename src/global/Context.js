@@ -1,12 +1,16 @@
-// import firebase from "firebase/app";
-// import "firebase/storage";
+// import firebase from "firebase";
 import { useEffect, useState } from "react";
 import { createContext } from "react";
 import { auth, db, storage } from "../config";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { signInWithEmailAndPassword } from "firebase/auth";
-// import { storageReference } from "firebase/storage";
 import { uploadBytesResumable, ref, getDownloadURL } from "firebase/storage";
+import {
+  addDoc,
+  collection,
+  Firestore,
+  serverTimestamp,
+} from "firebase/firestore";
 
 export const contextProvider = createContext();
 const Context = (props) => {
@@ -97,11 +101,35 @@ const Context = (props) => {
             break;
         }
       },
-      () => {
-        // Upload completed successfully, now we can get the download URL
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log("File available at", downloadURL);
-        });
+      async () => {
+        try {
+          const url = await getDownloadURL(storageRef);
+
+          const docRef = await addDoc(collection(db, "posts"), {
+            title,
+            image: url,
+            username: user.displayName,
+            currentTime: serverTimestamp(),
+          });
+          console.log("Document written with ID: ", docRef.id);
+        } catch (e) {
+          console.error("Error adding document: ", e);
+        }
+        // storage(
+        //   image.name.getDownloadURL().then((url) => {
+        //     db.collection("posts").add({
+        //       title,
+        //       image: url,
+        //       username: user.displayName,
+        //       currentTime: uploadTask.firestore.FieldValue.serverTimestamp(),
+        //     });
+        //   })
+        // );
+
+        // // Upload completed successfully, now we can get the download URL
+        // getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+        //   console.log("File available at", downloadURL);
+        // });
       }
     );
   };

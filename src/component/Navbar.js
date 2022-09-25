@@ -1,5 +1,4 @@
 import React from "react";
-import "./Navbar.css";
 import Logo from "../instagramLogo.png";
 import {
   FaSistrix,
