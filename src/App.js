@@ -5,6 +5,7 @@ import Context from "./global/Context";
 import Model from "./component/Model";
 import Stories from "./component/Stories";
 import Create from "./component/Create";
+import Posts from "./component/Posts";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <div className="container">
         <Stories />
         <Create />
+        <Posts />
       </div>
       <Model />
     </Context>

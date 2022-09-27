@@ -30,7 +30,6 @@ const Navbar = () => {
 
   const { model, openModel, user, loader, Logout } =
     useContext(contextProvider);
-  console.log("my model", model);
   return (
     <div className="navbar">
       <div className="navbar__first">

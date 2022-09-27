@@ -5,18 +5,25 @@ import { auth, db, storage } from "../config";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { uploadBytesResumable, ref, getDownloadURL } from "firebase/storage";
+// import { doc, setDoc } from "firebase/firestore";
 import {
   addDoc,
   collection,
   Firestore,
+  // onSnapShot,
+  limit,
   orderBy,
-  query,
-  onSnapshot,
-  getDoc,
   serverTimestamp,
+  query,
+  endAt,
+  getDoc,
   doc,
-  getDocs,
+  docRef,
+  onSnapshot,
+  // collection,
 } from "firebase/firestore";
+import Posts from "../component/Posts";
+// import { async } from "@firebase/util";
 
 export const contextProvider = createContext();
 const Context = (props) => {
@@ -25,6 +32,14 @@ const Context = (props) => {
   const [loader, setLoader] = useState(true);
   const [posts, setPosts] = useState([]);
 
+  // useEffect(() => {
+  //   return onSnapshot(
+  //     query(collection(db, "posts"), orderBy("timestamp", "desc")),
+  //     (snapshot) => {
+  //       setPosts(snapshot.docs);
+  //     }
+  //   );
+  // }, [db]);
   const openModel = () => {
     setModel(true);
   };
@@ -39,16 +54,13 @@ const Context = (props) => {
         displayName: username,
       });
       setModel(false);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const login = (user) => {
     const { email, password } = user;
     {
       const res = signInWithEmailAndPassword(auth, email, password);
-      console.log(res);
     }
     setModel(false);
   };
@@ -59,9 +71,7 @@ const Context = (props) => {
       .then(() => {
         setUser(null);
       })
-      .catch((error) => {
-        console.log("error of logout funcation", error);
-      });
+      .catch((error) => {});
   };
 
   const create = (data) => {
@@ -75,9 +85,9 @@ const Context = (props) => {
     uploadTask.on(
       "state_changed",
       (snapshot) => {
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log("Upload is " + progress + "% done");
         switch (snapshot.state) {
           case "paused":
             console.log("Upload is paused");
@@ -90,65 +100,56 @@ const Context = (props) => {
       (error) => {
         switch (error.code) {
           case "storage/unauthorized":
-            console.log("Not eligigble");
             break;
           case "storage/canceled":
-            console.log("cancel ");
             break;
 
           case "storage/unknown":
-            console.log(error);
             break;
         }
       },
       async () => {
         try {
-          const url = await getDownloadURL(storageRef);
-
-          const docRef = await addDoc(collection(db, "posts"), {
-            title,
-            image: url,
-            username: user.displayName,
-            currentTime: serverTimestamp(),
-          });
-          console.log("Document written with ID: ", docRef.id);
+          const url = await getDownloadURL(uploadTask.snapshot.ref);
+          const docRef = await addDoc(
+            collection(
+              db,
+              "posts"
+            )({
+              title,
+              image: url,
+              username: user.displayName,
+              currentTime: serverTimestamp(),
+            })
+          );
         } catch (e) {
-          console.error("Error adding document: ", e);
+          console.log("Error adding document: ", e);
         }
       }
     );
   };
-
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       setUser(user);
       setLoader(false);
+
+      // return onSnapshot(
+      //   query(collection(db, "posts"), orderBy("timestamp", "desc")),
+      //   (snapshot) => {
+      //     setPosts(
+      //       snapshot.docs.map((doc) => ({
+      //         id: doc.id,
+      //         title: doc.title,
+      //         image: doc.image,
+      //         username: doc.username,
+      //       }))
+      //     );
+      // },
+      // [db]
+      // );
     });
   }, []);
 
-  //jis state koo set kero gee use Effect me us koo dependance me nai rakhy
-  /// set hoo reha hyy or again chal reha hyy set hoo reha hyy again chal reha hyy ........
-
-  useEffect(() => {
-    const q = query(collection(db, "posts"), orderBy("currentTime", "desc"));
-    let unSubscribe = onSnapshot(q, (snapshot) => {
-      let data = []; //Create empty array
-
-      snapshot.forEach((doc) => {
-        //Each document in single iteration
-        //tabii is ko me array me save krwa reha hooo
-        data.push(doc.data());
-      });
-      // ab data me sara document aya  or post me sotre krwa dia
-      //SMJHA
-      setPosts(data);
-    });
-
-    return () => {
-      unSubscribe();
-    };
-  }, []);
-  // again loop
   return (
     <contextProvider.Provider
       value={{
@@ -160,8 +161,8 @@ const Context = (props) => {
         user,
         loader,
         Logout,
-        posts,
         create,
+        posts,
       }}
     >
       {props.children}
